@@ -4,7 +4,7 @@ metadata:
   name: development
   labels:
     name: vicky
-    project:roboshop
+    project: roboshop
 spec:
   containers:
   - name: nginx

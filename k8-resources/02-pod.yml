@@ -1,8 +1,10 @@
 apiVersion: v1
 kind: Pod
-metadata: 
+metadata:
   name: development
-  project: roboshop
+  labels:
+    name: vicky
+    project:roboshop
 spec:
   containers:
   - name: nginx

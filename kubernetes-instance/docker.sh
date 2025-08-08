@@ -22,7 +22,6 @@ sudo xfs_growfs /
 sudo xfs_growfs /var
 
 # Install eksctl for EKS cluster creation
-
 ARCH=amd64
 PLATFORM=$(uname -s)_$ARCH
 curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
@@ -30,7 +29,7 @@ curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_ch
 tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
 sudo install -m 0755 /tmp/eksctl /usr/local/bin && rm /tmp/eksctl
 eksctl version
-
+# Install AWS CLI v2 [we taken aws ec2 so need to install aws cli v2]
 # Install kubectl for cluster interaction
 curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/amd64/kubectl
 chmod +x ./kubectl

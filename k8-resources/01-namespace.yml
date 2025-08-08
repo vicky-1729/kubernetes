@@ -1,0 +1,7 @@
+appVersion: v1
+kind: Namespace
+metadata:
+  name: roboshop
+  labels:
+    name: development
+    project: roboshop

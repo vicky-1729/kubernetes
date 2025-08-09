@@ -8,6 +8,6 @@ spec:
     image: nginx
     env:
     - name: vsvicky
-      value: join-devops
+      value: "join-devops"
     - name: gss-elite-pg
-      value: march-2023
+      value: "march-2023"

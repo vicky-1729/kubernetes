@@ -1,1 +1,14 @@
-ap
+apiVersion: v1
+kind: pod
+metadata: 
+  purpose: demo for labels
+  labels:
+    name: vs vicky
+    project: roboshop
+    env: roboshop
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+
+    

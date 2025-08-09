@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: env demo
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    env:
+      name: vsvicky
+      course: join-devops

@@ -7,7 +7,7 @@ spec:
   - name: nginx
     image: nginx
     env:
-    - name: vsvicky
+    - name: course
       value: "join-devops"
-    - name: gsepg
+    - name: join-month
       value: "march"

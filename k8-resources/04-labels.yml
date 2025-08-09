@@ -1,14 +1,14 @@
 apiVersion: v1
-kind: pod
+kind: Pod
 metadata: 
-  purpose: demo for labels
+  name: label-demo-pod
   labels:
-    name: vs vicky
+    name: vs-vicky
     project: roboshop
     env: roboshop
+    purpose: demo-for-labels
 spec:
   containers:
   - name: nginx
     image: nginx:latest
 
-    

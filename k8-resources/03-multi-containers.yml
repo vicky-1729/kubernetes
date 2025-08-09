@@ -4,11 +4,10 @@ metadata:
   name: multi-container-pod
   annotations:
     purpose: demo of multi container
-
 spec:
   containers:
   - name: nginx
     image: nginx:latest
   - name: almalinux
     image: almalinux:latest
-    cmd: ["sleep","1000"]
+    command: ["sleep","1000"]

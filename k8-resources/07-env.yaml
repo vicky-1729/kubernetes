@@ -9,5 +9,5 @@ spec:
     env:
     - name: vsvicky
       value: "join-devops"
-    - name: gss-elite-pg
+    - name: gsepg
       value: "march"

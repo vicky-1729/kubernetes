@@ -1,15 +1,17 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  purpose: resources demo 
+  name: resources-demo      # You also need a 'name' in metadata
+  labels:
+    purpose: resources-demo
 spec:
   containers:
   - name: nginx
     image: nginx
     resources:
       requests:
-        memory: "120mi"
+        memory: "120Mi"
         cpu: "150m"
       limits:
-        memory: "150mi"
+        memory: "150Mi"
         cpu: "200m"

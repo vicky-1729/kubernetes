@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Pod 
 metadata:
+  name: annotation-demo-pod
   labels:
     name: project
     environment: dev
-    purpose: create annotations
+    purpose: create-annotations
   annotations:
-    description: "you can what ever you want there is no limit for this one words"
+    description: "You can write whatever you want here as there is no character limit for annotations"
 spec:
   containers:
   - name: nginx
     image: nginx
-  

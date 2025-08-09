@@ -7,5 +7,7 @@ spec:
   - name: nginx
     image: nginx
     env:
-      name: vsvicky
+    - name: vsvicky
       course: join-devops
+    - name: gss-elite-pg
+      date: march-2023

@@ -16,7 +16,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: service-demo
+  name: nginx
   labels:
     env: development
     project: roboshop

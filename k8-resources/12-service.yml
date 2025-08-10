@@ -10,21 +10,20 @@ spec:
   ports:
     - protocol: TCP
       port: 80 # service
-      targetport:80 # nginx
-----------
-
+      targetPort: 80 # nginx
+---
 
 apiVersion: v1
 kind: Pod
 metadata:
   name: service-demo
+  labels:
+    env: development
+    project: roboshop
+    purpose: service-demo
 spec:
   containers:
   - name: nginx
     image: nginx
-    labels:
-      env: development
-      project: roboshop
-      purpose: service-demo
 
 

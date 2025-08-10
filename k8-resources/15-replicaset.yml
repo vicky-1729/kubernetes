@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-rp
+  labels:
+    purpose: rp-demo
+spec:
+  # define how many you want to maintain
+  replicas: 3
+  selector:
+    matchLabels:
+      env: dev
+      project: roboshop
+      purpose: ReplicaSet-demo
+  # pod creation template that labels need to pass to above matchLabel selector
+  template:
+    metadata:
+      name: rp-demo
+      labels:
+        env: dev
+        project: roboshop
+        purpose: ReplicaSet-demo
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+

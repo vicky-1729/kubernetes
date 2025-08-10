@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: service-lb
 spec:
+  type: LoadBalancer
   selector:
     env: development
     project: roboshop

@@ -3,7 +3,7 @@ apiVersion: eksctl.io/v1alpha5        # eksctl config API version
 kind: ClusterConfig                   # Declares this as a cluster config
 
 metadata:
-  name: roboshop-project                      # Name of the EKS cluster
+  name: project-roboshop                    # Name of the EKS cluster
   region: us-east-1                   # AWS region for the cluster
 
 # Managed node group configuration

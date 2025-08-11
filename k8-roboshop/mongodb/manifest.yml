@@ -34,6 +34,7 @@ spec:
  kind: Service
  metadata: 
   name: mongodb
+  namespace: roboshop
   labels:
     project: roboshop
     env: dev

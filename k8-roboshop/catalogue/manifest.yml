@@ -2,13 +2,15 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: catalogue
+  namespace: roboshop  # Added namespace for consistency
   labels:
     project: roboshop
     component: catalogue
-    tier: apps  
-
-
-
+    tier: app
+data:
+  MONGO: "true"
+  MONGO_URL: "mongodb://mongodb:27017/catalogue"
+  
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -18,14 +20,14 @@ metadata:
   labels:
     project: roboshop
     component: catalogue
-    tier: apps
+    tier: app
 spec:
   replicas: 1
   selector:
     matchLabels:
       project: roboshop
       component: catalogue
-      tier: database
+      tier: app 
   template:
     metadata:
       name: catalogue
@@ -37,6 +39,10 @@ spec:
       containers:
       - name: catalogue
         image: joindevops/catalogue:v1
+        envFrom:
+        - configMapRef: 
+            name: catalogue
+
 ---
 apiVersion: v1
 kind: Service

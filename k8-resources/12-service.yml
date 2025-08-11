@@ -10,7 +10,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80 # service
-      targetPort: 80 # nginx
+      targetPort: 80 # nginx conatiner
 ---
 
 apiVersion: v1

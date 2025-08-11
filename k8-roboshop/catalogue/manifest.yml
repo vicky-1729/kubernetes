@@ -54,6 +54,7 @@ metadata:
     component: catalogue
     tier: app
 spec:
+  type: ClusterIP
   selector:
     project: roboshop
     component: catalogue

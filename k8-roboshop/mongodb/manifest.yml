@@ -36,6 +36,7 @@ metadata:
     component: mongodb
     tier: database
 spec:
+  type: ClusterIP
   selector:
     project: roboshop
     component: mongodb

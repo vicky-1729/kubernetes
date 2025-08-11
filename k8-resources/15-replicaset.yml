@@ -5,14 +5,12 @@ metadata:
   labels:
     purpose: rp-demo
 spec:
-  # define how many you want to maintain
   replicas: 3
   selector:
     matchLabels:
       env: dev
       project: roboshop
-      purpose: replicaSet-demo
-  # pod creation template that labels need to pass to above matchLabel selector
+      purpose: ReplicaSet-demo
   template:
     metadata:
       name: rp-demo

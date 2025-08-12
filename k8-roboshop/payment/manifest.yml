@@ -42,14 +42,15 @@ spec:
         - name: payment
           image: joindevops/payment:v1
           envFrom:
-            name: payment
+          - configMapRef:
+              name: payment
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: payment
   namespace: roboshop
-  lables:
+  labels:
     component: payment
     project: roboshop
     tier: app 

@@ -1,17 +1,3 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mysql
-  namespace: roboshop
-  labels:
-    component: mysql
-    project: roboshop
-    tier: database
-type: Opaque
-data:
-  MYSQL_ROOT_PASSWORD: "Um9ib1Nob3BAMQ=="
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
@@ -30,7 +16,6 @@ spec:
       tier: database
   template:
     metadata:
-      name: mysql
       labels:
         component: mysql
         project: roboshop
@@ -40,24 +25,5 @@ spec:
       - name: mysql
         image: joindevops/mysql:v1
         envFrom:
-          - sceretRef:
+          - secretRef:
               name: mysql
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql
-  namespace: roboshop
-  labels:
-    component: mysql
-    project: roboshop
-    tier: database
-spec:
-  selector:
-      component: mysql
-      project: roboshop
-      tier: database
-  ports:
-  - protocol: TCP
-    port: 3306
-    targetPort: 3306

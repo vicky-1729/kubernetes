@@ -11,9 +11,9 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-    component: redis
-    project: roboshop
-    tier: database
+      component: redis
+      project: roboshop
+      tier: database
   template:
     metadata:
       name: redis
@@ -42,5 +42,5 @@ spec:
     tier: database
   ports:
   - protocol: TCP
-    port: 27017 # service port
-    targetPort: 27017 # target port
+    port: 6379 # service port
+    targetPort: 6379 # Redis standard port

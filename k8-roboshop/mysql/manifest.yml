@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Sceret
+metadata:
+  name: mysql
+  namespace: roboshop
+  labels:
+    component: mysql
+    project: roboshop
+    tier: database
+type: Opaque
+data:
+  MYSQL_ROOT_PASSWORD: "Um9ib1Nob3BAMQ=="
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: mysql
+  namespace: roboshop
+  labels:
+    component: mysql
+    project: roboshop
+    tier: database
+spec:
+  replicas: 1
+  selector:
+    component: mysql
+    project: roboshop
+    tier: database
+  template:
+    metadata:
+      name: mysql
+      labels:
+        component: mysql
+        project: roboshop
+        tier: database
+    spec:
+      containers:
+      - name: mysql
+        image: joindevops/mysql:v1
+        envFrom:
+          - sceretRef:
+              name: mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: roboshop
+  labels:
+    component: mysql
+    project: roboshop
+    tier: database
+spec:
+  selector:
+    component: mysql
+    project: roboshop
+    tier: database
+  port:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080

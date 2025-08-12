@@ -13,6 +13,20 @@ data:
   USER_HOST: "user"
   USER_PORT: "8080"
   AMQP_HOST: "rabbitmq"  
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: payment
+  labels:
+    component: payment
+    project: roboshop
+    tier: app
+type: Opaque
+data:
+  AMQP_USER: "cm9ib3Nob3A="
+  AMQP_PASS: "cm9ib3Nob3AxMjM="
 ---
 apiVersion: apps/v1
 kind: Deployment

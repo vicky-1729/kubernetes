@@ -1,29 +1,30 @@
+# Service: Exposes pods using LoadBalancer (for cloud providers)
 apiVersion: v1
 kind: Service
 metadata:
-  name: service-lb
+  name: service-lb  # Name of the service
 spec:
-  type: LoadBalancer
+  type: LoadBalancer  # LoadBalancer type for external access
   selector:
-    env: development
-    project: roboshop
-    purpose: service-demo
+    env: development  # Select pods with this label
+    project: roboshop  # Project label
+    purpose: service-demo  # Purpose label
   ports:
     - protocol: TCP
-      port: 80 # service
-      targetPort: 80 # nginx
-
+      port: 80 # Port exposed by the service
+      targetPort: 80 # Port on the pod/container
 ---
+# Pod: Nginx pod that matches the service selector
 apiVersion: v1
 kind: Pod
 metadata:
-  name: service-lb
+  name: service-lb  # Name of the pod
   labels:
-    env: development
-    project: roboshop
-    purpose: service-demo
+    env: development  # Environment label
+    project: roboshop  # Project label
+    purpose: service-demo  # Purpose label
 spec:
   containers:
-    - name: nginx
-      image: nginx
-      
+    - name: nginx  # Name of the container
+      image: nginx  # Docker image for the container
+

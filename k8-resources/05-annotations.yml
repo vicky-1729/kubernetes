@@ -1,14 +1,15 @@
+# Pod: Demonstrates use of annotations for extra information
 apiVersion: v1
 kind: Pod 
 metadata:
-  name: annotation-demo-pod
+  name: annotation-demo-pod  # Name of the pod
   labels:
-    name: project
-    environment: dev
-    purpose: create-annotations
+    name: project  # Custom label
+    environment: dev  # Environment label
+    purpose: create-annotations  # Purpose label
   annotations:
-    description: "You can write whatever you want here as there is no character limit for annotations"
+    description: "You can write whatever you want here as there is no character limit for annotations"  # Annotation for documentation
 spec:
   containers:
-  - name: nginx
-    image: nginx
+  - name: nginx  # Name of the container
+    image: nginx  # Docker image for the container

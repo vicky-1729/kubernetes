@@ -1,11 +1,12 @@
+# Pod: Smallest deployable unit in Kubernetes
 apiVersion: v1
 kind: Pod
 metadata:
-  name: development
+  name: development  # Name of the pod
   labels:
-    name: vicky
-    project: roboshop
+    name: vicky  # Custom label
+    project: roboshop  # Project label
 spec:
   containers:
-  - name: nginx
-    image: nginx:1.14.2
+  - name: nginx  # Name of the container
+    image: nginx:1.14.2  # Docker image for the container

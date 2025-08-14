@@ -1,13 +1,14 @@
+# Pod: Demonstrates setting environment variables in a container
 apiVersion: v1
 kind: Pod
 metadata:
-  name: env-demo
+  name: env-demo  # Name of the pod
 spec:
   containers:
-  - name: nginx
-    image: nginx
+  - name: nginx  # Name of the container
+    image: nginx  # Docker image for the container
     env:
     - name: course
-      value: "join-devops"
+      value: "join-devops"  # Custom environment variable
     - name: join-month
-      value: "march"
+      value: "march"  # Custom environment variable

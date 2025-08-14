@@ -1,14 +1,15 @@
+# Pod: Demonstrates use of labels for organization and selection
 apiVersion: v1
 kind: Pod
 metadata: 
-  name: label-demo-pod
+  name: label-demo-pod  # Name of the pod
   labels:
-    name: vs-vicky
-    project: roboshop
-    env: roboshop
-    purpose: demo-for-labels
+    name: vs-vicky  # Custom label
+    project: roboshop  # Project label
+    env: roboshop  # Environment label
+    purpose: demo-for-labels  # Purpose label
 spec:
   containers:
-  - name: nginx
-    image: nginx:latest
+  - name: nginx  # Name of the container
+    image: nginx:latest  # Docker image for the container
 

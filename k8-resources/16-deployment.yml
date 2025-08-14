@@ -1,24 +1,25 @@
+# Deployment: Manages updates and scaling for pods
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment-demo
+  name: deployment-demo  # Name of the Deployment
   labels:
-    purpose: deployment-demo
+    purpose: deployment-demo  # Purpose label
 spec:
-  replicas: 3
+  replicas: 3  # Number of pod copies
   selector:
     matchLabels:
-      purpose: deployment-demo
-      env: test
-      project: roboshop
+      purpose: deployment-demo  # Purpose label
+      env: test  # Environment label
+      project: roboshop  # Project label
   template:
     metadata:
-      name: deployment-demo
+      name: deployment-demo  # Name of the pod template
       labels:
-        purpose: deployment-demo
-        env: test
-        project: roboshop
+        purpose: deployment-demo  # Purpose label
+        env: test  # Environment label
+        project: roboshop  # Project label
     spec:
       containers:
-      - name: nginx
-        image: nginx
+      - name: nginx  # Name of the container
+        image: nginx  # Docker image for the container

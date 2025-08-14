@@ -1,10 +1,12 @@
+# ConfigMap: Stores non-sensitive configuration data for pods
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pod-config
+  name: pod-config  # Name of the ConfigMap
   labels:
-    purpose: config-map-demo
+    purpose: config-map-demo  # Purpose label
+# Data section contains key-value pairs used by the app
 data:
-  Trainer: "siva"
-  course: "devops"
-  Hours: "120hrs"
+  Trainer: "siva"  # Trainer name
+  course: "devops"  # Course name
+  Hours: "120hrs"  # Duration

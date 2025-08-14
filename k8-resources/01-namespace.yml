@@ -1,8 +1,9 @@
+# Namespace: Logical grouping for Kubernetes resources
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: roboshop
+  name: roboshop  # Name of the namespace
   labels:
-    name: development
-    project: roboshop
+    name: development  # Label for environment
+    project: roboshop  # Label for project
 

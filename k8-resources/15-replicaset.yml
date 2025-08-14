@@ -1,25 +1,26 @@
+# ReplicaSet: Ensures a specified number of pod replicas are running
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: nginx-rp
+  name: nginx-rp  # Name of the ReplicaSet
   labels:
-    purpose: rp-demo
+    purpose: rp-demo  # Purpose label
 spec:
-  replicas: 3
+  replicas: 3  # Number of pod copies
   selector:
     matchLabels:
-      env: dev
-      project: roboshop
-      purpose: ReplicaSet-demo
+      env: dev  # Environment label
+      project: roboshop  # Project label
+      purpose: ReplicaSet-demo  # Purpose label
   template:
     metadata:
-      name: rp-demo
+      name: rp-demo  # Name of the pod template
       labels:
-        env: dev
-        project: roboshop
-        purpose: ReplicaSet-demo
+        env: dev  # Environment label
+        project: roboshop  # Project label
+        purpose: ReplicaSet-demo  # Purpose label
     spec:
       containers:
-      - name: nginx
-        image: nginx
+      - name: nginx  # Name of the container
+        image: nginx  # Docker image for the container
 

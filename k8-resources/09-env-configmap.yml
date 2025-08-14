@@ -1,11 +1,12 @@
+# Pod: Loads environment variables from a ConfigMap
 apiVersion: v1
 kind: Pod 
 metadata:
-  name: env-config-map
+  name: env-config-map  # Name of the pod
 spec:
   containers:
-  - name: nginx
-    image: nginx
+  - name: nginx  # Name of the container
+    image: nginx  # Docker image for the container
     envFrom:
     - configMapRef:
-        name: pod-config
+        name: pod-config  # Reference to ConfigMap

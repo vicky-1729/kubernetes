@@ -1,13 +1,14 @@
+# Pod: Example of a pod with multiple containers
 apiVersion: v1
 kind: Pod
 metadata:
-  name: multi-container-pod
+  name: multi-container-pod  # Name of the pod
   annotations:
-    purpose: demo of multi container
+    purpose: demo of multi container  # Annotation for documentation
 spec:
   containers:
-  - name: nginx
-    image: nginx:latest
-  - name: almalinux
-    image: almalinux:latest
-    command: ["sleep","1000"]
+  - name: nginx  # First container
+    image: nginx:latest  # Nginx image
+  - name: almalinux  # Second container
+    image: almalinux:latest  # AlmaLinux image
+    command: ["sleep","1000"]  # Command to keep container running

@@ -1,17 +1,18 @@
+# Pod: Demonstrates resource requests and limits for containers
 apiVersion: v1
 kind: Pod
 metadata:
-  name: resources-demo      # You also need a 'name' in metadata
+  name: resources-demo      # Name of the pod
   labels:
-    purpose: resources-demo
+    purpose: resources-demo  # Purpose label
 spec:
   containers:
-  - name: nginx
-    image: nginx
+  - name: nginx  # Name of the container
+    image: nginx  # Docker image for the container
     resources:
       requests:
-        memory: "120Mi"
-        cpu: "150m"
+        memory: "120Mi"  # Minimum memory required
+        cpu: "150m"      # Minimum CPU required
       limits:
-        memory: "150Mi"
-        cpu: "200m"
+        memory: "150Mi"  # Maximum memory allowed
+        cpu: "200m"      # Maximum CPU allowed

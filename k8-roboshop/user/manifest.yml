@@ -1,3 +1,4 @@
+# ConfigMap: Stores environment variables for the user microservice
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,13 +8,14 @@ metadata:
     component: user
     project: roboshop
     tier: app
+# Data section contains key-value pairs used by the app
 data:
-  MONGO: "true"
-  REDIS_URL: "redis://redis:6379"
-  MONGO_URL: "mongodb://mongodb:27017/users"
-
+  MONGO: "true"  # Enable MongoDB
+  REDIS_URL: "redis://redis:6379"  # Redis connection string
+  MONGO_URL: "mongodb://mongodb:27017/users"  # MongoDB connection string
 
 ---
+# Deployment: Creates and manages pods for the user microservice
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
@@ -24,7 +26,7 @@ metadata:
     project: roboshop
     tier: app
 spec:
-  replicas: 1
+  replicas: 1  # Number of pod copies
   selector:
     matchLabels:
       component: user
@@ -40,11 +42,12 @@ spec:
     spec: 
       containers:
       - name: user
-        image: joindevops/user:v1
+        image: joindevops/user:v1  # Docker image for the app
         envFrom:
         - configMapRef:
-            name: user
+            name: user  # Load environment variables from ConfigMap
 ---
+# Service: Exposes the user pods inside the cluster
 apiVersion: v1
 kind: Service
 metadata:
@@ -61,5 +64,5 @@ spec:
     tier: app
   ports:
   - protocol: TCP
-    port: 8080 # service port
-    targetPort: 8080 # targetport
+    port: 8080 # Port exposed by the service
+    targetPort: 8080 # Port on the pod/container

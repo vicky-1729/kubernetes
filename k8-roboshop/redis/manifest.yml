@@ -1,3 +1,4 @@
+# Deployment: Creates and manages pods for the Redis database
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -8,7 +9,7 @@ metadata:
     project: roboshop
     tier: database
 spec:
-  replicas: 1
+  replicas: 1  # Number of pod copies
   selector:
     matchLabels:
       component: redis
@@ -24,8 +25,9 @@ spec:
     spec:
       containers:
         - name: redis
-          image: redis:7.0
+          image: redis:7.0  # Docker image for Redis
 ---
+# Service: Exposes the Redis pods inside the cluster
 apiVersion: v1
 kind: Service
 metadata:
@@ -42,5 +44,5 @@ spec:
     tier: database
   ports:
   - protocol: TCP
-    port: 6379 # service port
+    port: 6379 # Port exposed by the service
     targetPort: 6379 # Redis standard port

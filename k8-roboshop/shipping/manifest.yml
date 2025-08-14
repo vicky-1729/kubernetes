@@ -1,3 +1,4 @@
+# ConfigMap: Stores environment variables for the shipping microservice
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,10 +8,12 @@ metadata:
     component: shipping
     project: roboshop
     tier: app 
+# Data section contains key-value pairs used by the app
 data:
-  CART_ENDPOINT: "cart:8080"
-  DB_HOST: "mysql"   
+  CART_ENDPOINT: "cart:8080"  # Endpoint for cart service
+  DB_HOST: "mysql"   # Hostname for MySQL database
 ---
+# Deployment: Creates and manages pods for the shipping microservice
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,7 +24,7 @@ metadata:
     project: roboshop
     tier: app
 spec:
-  replicas: 1
+  replicas: 1  # Number of pod copies
   selector:
     matchLabels:
       component: shipping
@@ -37,11 +40,12 @@ spec:
     spec:
       containers:
       - name: shipping
-        image: joindevops/shipping:v1
+        image: joindevops/shipping:v1  # Docker image for the app
         envFrom:
         - configMapRef:
-            name: shipping
+            name: shipping  # Load environment variables from ConfigMap
 ---
+# Service: Exposes the shipping pods inside the cluster
 apiVersion: v1
 kind: Service
 metadata:
@@ -58,5 +62,5 @@ spec:
     tier: app
   ports:
   - protocol: TCP
-    port: 8080
-    targetPort: 8080
+    port: 8080 # Port exposed by the service
+    targetPort: 8080 # Port on the pod/container

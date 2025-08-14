@@ -1,3 +1,4 @@
+# ConfigMap: Stores environment variables for the payment microservice
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,14 +8,16 @@ metadata:
     component: payment
     project: roboshop
     tier: app
+# Data section contains key-value pairs used by the app
 data:
-  CART_HOST: "cart"
-  CART_PORT: "8080"
-  USER_HOST: "user"
-  USER_PORT: "8080"
-  AMQP_HOST: "rabbitmq"  
+  CART_HOST: "cart"  # Hostname for cart service
+  CART_PORT: "8080"  # Port for cart service
+  USER_HOST: "user"  # Hostname for user service
+  USER_PORT: "8080"  # Port for user service
+  AMQP_HOST: "rabbitmq"  # Hostname for RabbitMQ
 
 ---
+# Secret: Stores sensitive data for payment microservice
 apiVersion: v1
 kind: Secret
 metadata:
@@ -23,11 +26,14 @@ metadata:
     component: payment
     project: roboshop
     tier: app
+# Type Opaque means generic secret
+# Data section contains base64 encoded values
 type: Opaque
 data:
-  AMQP_USER: "cm9ib3Nob3A="
-  AMQP_PASS: "cm9ib3Nob3AxMjM="
+  AMQP_USER: "cm9ib3Nob3A="  # RabbitMQ username (base64)
+  AMQP_PASS: "cm9ib3Nob3AxMjM="  # RabbitMQ password (base64)
 ---
+# Deployment: Creates and manages pods for the payment microservice
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,7 +44,7 @@ metadata:
     project: roboshop
     tier: app  
 spec:
-  replicas: 1
+  replicas: 1  # Number of pod copies
   selector:
     matchLabels:
       component: payment
@@ -54,13 +60,14 @@ spec:
     spec:
       containers:
         - name: payment
-          image: joindevops/payment:v1
+          image: joindevops/payment:v1  # Docker image for the app
           envFrom:
           - configMapRef:
-              name: payment
+              name: payment  # Load environment variables from ConfigMap
           - secretRef:
-              name: payment
+              name: payment  # Load sensitive data from Secret
 ---
+# Service: Exposes the payment pods inside the cluster
 apiVersion: v1
 kind: Service
 metadata:
@@ -71,13 +78,13 @@ metadata:
     project: roboshop
     tier: app 
 spec:
-  type: ClusterIP
+  type: ClusterIP  # Internal cluster service
   selector:
     component: payment
     project: roboshop
     tier: app 
   ports:
   - protocol: TCP
-    port: 8080
-    targetPort: 8080
+    port: 8080 # Port exposed by the service
+    targetPort: 8080 # Port on the pod/container
 

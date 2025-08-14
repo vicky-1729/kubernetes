@@ -1,3 +1,4 @@
+# Secret: Stores sensitive data for RabbitMQ
 apiVersion: v1
 kind: Secret
 metadata:
@@ -7,12 +8,15 @@ metadata:
     component: rabbitmq
     project: roboshop
     tier: database
+# Type Opaque means generic secret
+# Data section contains base64 encoded values
 type: Opaque
 data:
-  RABBITMQ_DEFAULT_USER: "cm9ib3Nob3A="
-  RABBITMQ_DEFAULT_PASS: "cm9ib3Nob3AxMjM="
+  RABBITMQ_DEFAULT_USER: "cm9ib3Nob3A="  # RabbitMQ username (base64)
+  RABBITMQ_DEFAULT_PASS: "cm9ib3Nob3AxMjM="  # RabbitMQ password (base64)
 
 ---
+# Deployment: Creates and manages pods for RabbitMQ
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -23,7 +27,7 @@ metadata:
     project: roboshop
     tier: database
 spec:
-  replicas: 1
+  replicas: 1  # Number of pod copies
   selector:
     matchLabels:
       component: rabbitmq
@@ -39,12 +43,13 @@ spec:
     spec:
       containers:
       - name: rabbitmq
-        image: rabbitmq:3
+        image: rabbitmq:3  # Docker image for RabbitMQ
         envFrom:
         - secretRef:
-            name: rabbitmq
+            name: rabbitmq  # Load sensitive data from Secret
 
 ---
+# Service: Exposes the RabbitMQ pods inside the cluster
 apiVersion: v1
 kind: Service
 metadata:
@@ -61,5 +66,5 @@ spec:
     tier: database   
   ports:
   - protocol: TCP
-    port: 5672
-    targetPort: 5672
+    port: 5672 # Port exposed by the service
+    targetPort: 5672 # Port on the pod/container

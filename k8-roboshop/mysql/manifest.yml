@@ -1,3 +1,4 @@
+# Secret: Stores sensitive data for MySQL database
 apiVersion: v1
 kind: Secret
 metadata:
@@ -7,11 +8,14 @@ metadata:
     component: mysql
     project: roboshop
     tier: database
+# Type Opaque means generic secret
+# Data section contains base64 encoded values
 type: Opaque
 data:
-  MYSQL_ROOT_PASSWORD: "Um9ib1Nob3BAMQ=="
+  MYSQL_ROOT_PASSWORD: "Um9ib1Nob3BAMQ=="  # MySQL root password (base64)
 
 ---
+# Deployment: Creates and manages pods for the MySQL database
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
@@ -22,7 +26,7 @@ metadata:
     project: roboshop
     tier: database
 spec:
-  replicas: 1
+  replicas: 1  # Number of pod copies
   selector:
     matchLabels:
       component: mysql
@@ -38,11 +42,12 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: joindevops/mysql:v1
+        image: joindevops/mysql:v1  # Docker image for MySQL
         envFrom:
           - secretRef:
-              name: mysql
+              name: mysql  # Load sensitive data from Secret
 ---
+# Service: Exposes the MySQL pods inside the cluster
 apiVersion: v1
 kind: Service
 metadata:
@@ -59,5 +64,5 @@ spec:
       tier: database
   ports:
   - protocol: TCP
-    port: 3306
-    targetPort: 3306
+    port: 3306 # Port exposed by the service
+    targetPort: 3306 # Port on the pod/container

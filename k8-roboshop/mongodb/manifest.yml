@@ -1,3 +1,4 @@
+# Deployment: Creates and manages pods for the MongoDB database
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -8,7 +9,7 @@ metadata:
     component: mongodb
     tier: database
 spec:
-  replicas: 1
+  replicas: 1  # Number of pod copies
   selector:
     matchLabels:
       project: roboshop
@@ -23,8 +24,9 @@ spec:
     spec:
       containers:
       - name: mongodb
-        image: joindevops/mongodb:v1
+        image: joindevops/mongodb:v1  # Docker image for MongoDB
 ---
+# Service: Exposes the MongoDB pods inside the cluster
 apiVersion: v1
 kind: Service
 metadata:
@@ -35,12 +37,12 @@ metadata:
     component: mongodb
     tier: database
 spec:
-  type: ClusterIP
+  type: ClusterIP  # Internal cluster service
   selector:
     project: roboshop
     component: mongodb
     tier: database
   ports:
   - protocol: TCP
-    port: 27017
-    targetPort: 27017
+    port: 27017 # Port exposed by the service
+    targetPort: 27017 # Port on the pod/container

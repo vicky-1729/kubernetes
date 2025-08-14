@@ -3,8 +3,9 @@ kind: PersistentVolume
 metadata:
   name: ebs-static-pv
 spec:
+  storageClassName: "" # <-- match PVC
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   capacity:
     storage: 10Gi
   csi:
@@ -17,14 +18,13 @@ kind: PersistentVolumeClaim
 metadata:
   name: ebs-static-pvc
 spec:
-  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+  storageClassName: "" # must match PV
   volumeName: ebs-static-pv
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi
-
 ---
 apiVersion: v1
 kind: Pod
@@ -35,16 +35,15 @@ metadata:
     env: dev
 spec:
   containers:
-  - name: nginx
-    image: nginx
-    volumeMounts:
-    - name: persistent-storage
-      mountPath: /usr/share/nginx/html
+    - name: nginx
+      image: nginx
+      volumeMounts:
+        - name: persistent-storage
+          mountPath: /usr/share/nginx/html
   volumes:
-  - name: persistent-storage
-    persistentVolumeClaim:
-      claimName: ebs-static-pvc
-
+    - name: persistent-storage
+      persistentVolumeClaim:
+        claimName: ebs-static-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -56,6 +55,6 @@ spec:
     project: roboshop
     env: dev
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8080
+    - protocol: TCP
+      port: 80
+      targetPort: 80 # changed from 8080

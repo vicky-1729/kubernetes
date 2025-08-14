@@ -35,7 +35,7 @@ metadata:
     env: dev
 spec:
   nodeSelector:
-    topology.kubernetes.io/zone: us-east-1a
+    topology.kubernetes.io/zone: us-east-1c
   containers:
     - name: nginx
       image: nginx

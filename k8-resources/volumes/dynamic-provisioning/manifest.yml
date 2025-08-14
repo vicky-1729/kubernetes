@@ -1,3 +1,4 @@
+# This PVC asks Kubernetes to create a new EBS volume using the 'roboshop-ebs' StorageClass
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -5,12 +6,13 @@ metadata:
   name: ebs-dynamic-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: roboshop-ebs
+    - ReadWriteOnce  # Only one node can use this volume at a time
+  storageClassName: roboshop-ebs  # Use the StorageClass for dynamic EBS provisioning
   resources:
     requests:
-      storage: 4Gi
+      storage: 4Gi  # Request 4GB of storage
 
+# This Pod runs Nginx and mounts the EBS volume at /usr/share/nginx/html
 ---
 apiVersion: v1
 kind: Pod
@@ -18,14 +20,14 @@ metadata:
   name: nginx
 spec:
   nodeSelector:
-    topology.kubernetes.io/zone: us-east-1c
+    topology.kubernetes.io/zone: us-east-1c  # Make sure the pod runs in the same zone as the EBS volume
   containers:
   - name: nginx
     image: nginx
     volumeMounts:
     - name: persistent-storage
-      mountPath: /usr/share/nginx/html
+      mountPath: /usr/share/nginx/html  # Mount the EBS volume here
   volumes:
   - name: persistent-storage
     persistentVolumeClaim:
-      claimName: ebs-dynamic-pvc
+      claimName: ebs-dynamic-pvc  # Use the PVC to get the EBS volume

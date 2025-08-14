@@ -1,3 +1,4 @@
+# This PersistentVolume (PV) represents a manually created EBS disk in AWS
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -5,27 +6,29 @@ metadata:
 spec:
   storageClassName: "" # <-- match PVC
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteOnce  # Only one node can use this volume at a time
   capacity:
-    storage: 10Gi
+    storage: 10Gi  # The disk size is 10GB
   csi:
-    driver: ebs.csi.aws.com
-    fsType: ext4
-    volumeHandle: vol-063a871dd13f6b185
+    driver: ebs.csi.aws.com  # Use the AWS EBS CSI driver
+    fsType: ext4  # Format the disk with ext4 filesystem
+    volumeHandle: vol-063a871dd13f6b185  # The actual EBS volume ID in AWS
 ---
+# This PVC asks for storage from the specific PV above
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: ebs-static-pvc
 spec:
   storageClassName: "" # must match PV
-  volumeName: ebs-static-pv
+  volumeName: ebs-static-pv  # Bind to the PV created above
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteOnce  # Only one node can use this volume at a time
   resources:
     requests:
-      storage: 5Gi
+      storage: 5Gi  # Request 5GB (must be <= PV size)
 ---
+# This Pod runs Nginx and mounts the EBS volume at /usr/share/nginx/html
 apiVersion: v1
 kind: Pod
 metadata:
@@ -41,22 +44,23 @@ spec:
       image: nginx
       volumeMounts:
         - name: persistent-storage
-          mountPath: /usr/share/nginx/html
+          mountPath: /usr/share/nginx/html  # Mount the EBS volume here
   volumes:
     - name: persistent-storage
       persistentVolumeClaim:
-        claimName: ebs-static-pvc
+        claimName: ebs-static-pvc  # Use the PVC to get the EBS volume
 ---
+# This Service exposes the Nginx pod using a LoadBalancer
 apiVersion: v1
 kind: Service
 metadata:
   name: ebs-static
 spec:
-  type: LoadBalancer
+  type: LoadBalancer  # Expose the service externally using a cloud load balancer
   selector:
     project: roboshop
-    env: dev
+    env: dev  # Match the pod labels above
   ports:
     - protocol: TCP
-      port: 80
+      port: 80  # Service port
       targetPort: 80 # changed from 8080

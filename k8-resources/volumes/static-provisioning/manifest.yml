@@ -30,6 +30,9 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: nginx
+  labels:
+    project: roboshop
+    env: dev
 spec:
   containers:
   - name: nginx
@@ -41,3 +44,18 @@ spec:
   - name: persistent-storage
     persistentVolumeClaim:
       claimName: ebs-static-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ebs-static
+spec:
+  type: LoadBalancer
+  selector:
+    project: roboshop
+    env: dev
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080

@@ -52,6 +52,8 @@ spec:
         volumeMounts:
         - name: ebs-roboshop-pvc
           mountPath: /usr/share/nginx/html
+          nodeSelector:
+            topology.kubernetes.io/zone: us-east-1c
   # This is nothing but PVC, you can directly create here
   volumeClaimTemplates:
   - metadata:

@@ -18,10 +18,15 @@ kubectl apply -f efs-driver.yaml
 
 ### 1. Security Groups
 - EFS/EBS security group must allow inbound NFS (port 2049 for EFS) from worker node security group.
+- EC2 node security group should allow outbound NFS (port 2049) to EFS security group.
 - Inbound rule example:
   - Type: NFS
   - Port: 2049
   - Source: Worker node security group
+- Outbound rule example:
+  - Type: NFS
+  - Port: 2049
+  - Destination: EFS security group
 
 ### 2. Subnet & VPC
 - EFS/EBS and worker nodes must be in the same VPC.
@@ -51,3 +56,39 @@ kubectl apply -f efs-driver.yaml
 - Configure AWS networking and security
 - Use correct StorageClass and PVC/PV mapping
 - Check IAM, network, and logs for troubleshooting
+```
+Client
+  │
+  ▼
+Normal Service (nginx-svc-normal)
+  │
+  ▼
+StatefulSet Pods
+ ├─ Pod 0: nginx-statefulset-0
+ │     │
+ │     ▼
+ │   PVC: www-nginx-statefulset-0
+ │     │
+ │     ▼
+ │   EFS Mount Target us-east-1a (SG: sg-0e73876bce9ca1ac8)
+ │     ▲
+ │     │ NFS Port 2049 allowed from Worker Node SG (sg-02d1b8ab0e2be71c5)
+ ├─ Pod 1: nginx-statefulset-1
+ │     │
+ │     ▼
+ │   PVC: www-nginx-statefulset-1
+ │     │
+ │     ▼
+ │   EFS Mount Target us-east-1a (SG: sg-0e73876bce9ca1ac8)
+ │     ▲
+ │     │ NFS Port 2049 allowed from Worker Node SG (sg-02d1b8ab0e2be71c5)
+ └─ Pod 2: nginx-statefulset-2
+       │
+       ▼
+     PVC: www-nginx-statefulset-2
+       │
+       ▼
+     EFS Mount Target us-east-1c (SG: sg-0e73876bce9ca1ac8)
+       ▲
+       │ NFS Port 2049 allowed from Worker Node SG (sg-02d1b8ab0e2be71c5)
+```

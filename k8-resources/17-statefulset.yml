@@ -50,12 +50,12 @@ spec:
       - name: nginx
         image: nginx
         volumeMounts:
-        - name: www
+        - name: ebs-roboshop-pvc
           mountPath: /usr/share/nginx/html
   # This is nothing but PVC, you can directly create here
   volumeClaimTemplates:
   - metadata:
-      name: www
+      name: ebs-roboshop-pvc
     spec:
       accessModes: [ "ReadWriteOnce" ]
     # storageClassName: "roboshop-ebs"  # <-- Change this to your EFS storage class name

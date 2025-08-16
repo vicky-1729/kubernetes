@@ -58,8 +58,8 @@ spec:
       name: www
     spec:
       accessModes: [ "ReadWriteOnce" ]
-    # storageClassName: "efs-roboshop"  # <-- Change this to your EFS storage class name
-      storageClassName: "ebs-sc"   # <-- Change this to your EBS storage class name
+    # storageClassName: "roboshop-ebs"  # <-- Change this to your EFS storage class name
+      storageClassName: "roboshop-ebs"   # <-- Change this to your EBS storage class name
       resources:
         requests:
           storage: 2Gi

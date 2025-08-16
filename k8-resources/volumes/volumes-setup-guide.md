@@ -1,5 +1,14 @@
 # Kubernetes Volumes: Setup & Common Checks
 
+# IMPORTANT: For EFS/EBS to work in Kubernetes, networking and security must be correct!
+# - EFS/EBS security group must allow inbound NFS (port 2049 for EFS) from worker node security group.
+# - EC2 node security group should allow outbound NFS (port 2049) to EFS security group.
+# - EFS must have mount targets in all AZs where your nodes run.
+# - Subnet NACLs must allow TCP 2049 between nodes and EFS.
+# - Node IAM role must have AmazonEFSCSIDriverPolicy attached.
+# - StorageClass must reference the correct EFS FileSystem ID.
+# - Pod will be stuck in ContainerCreating if any of the above is missing!
+
 ## Required Installations
 
 ### EBS CSI Driver
@@ -56,6 +65,7 @@ kubectl apply -f efs-driver.yaml
 - Configure AWS networking and security
 - Use correct StorageClass and PVC/PV mapping
 - Check IAM, network, and logs for troubleshooting
+
 ```
 Client
   │

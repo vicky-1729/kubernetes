@@ -1,3 +1,12 @@
+# IMPORTANT:
+# - Ensure 'roboshop-efs' StorageClass exists and references the correct EFS FileSystem ID.
+# - EFS security group must allow inbound NFS (TCP 2049) from worker node security group.
+# - EFS must have mount targets in all AZs where nodes run.
+# - Node IAM role must have AmazonEFSCSIDriverPolicy attached.
+# - Pod will be stuck in ContainerCreating if any of the above is missing!
+# - Use ReadWriteMany for EFS volumes to allow multi-pod access.
+# - PVC name in volumeMounts and volumeClaimTemplates must match.
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -9,7 +18,7 @@ spec:
   ports:
   - port: 80
     name: web
-  clusterIP: None
+  clusterIP: None  # Headless service for StatefulSet pod DNS
   selector:
     purpose: statefulset
     project: roboshop
@@ -37,29 +46,29 @@ spec:
   selector:
     matchLabels:
       purpose: statefulset
-      project: roboshop # has to match .spec.template.metadata.labels
-  serviceName: "nginx-svc-headless" # this should be headless service
-  replicas: 3 # by default is 1
+      project: roboshop # Must match pod template labels below
+  serviceName: "nginx-svc-headless" # Connects StatefulSet pods to headless service
+  replicas: 3 # Number of pods to create
   template:
     metadata:
       labels:
         purpose: statefulset
-        project: roboshop # has to match .spec.selector.matchLabels
+        project: roboshop # Must match selector above
     spec:
       containers:
       - name: nginx
         image: nginx
         volumeMounts:
-        - name: efs-dynamic-pvc
-          mountPath: /usr/share/nginx/html
+        - name: efs-dynamic-pvc  # Connects to PVC below for EFS mount
+          mountPath: /usr/share/nginx/html  # EFS volume mounted here in container
       # nodeSelector:
       #   topology.kubernetes.io/zone: us-east-1c
   volumeClaimTemplates:
   - metadata:
-      name: efs-dynamic-pvc
+      name: efs-dynamic-pvc  # PVC name must match volumeMounts above
     spec:
-      storageClassName: "roboshop-efs"
-      accessModes: [ "ReadWriteMany" ]
+      storageClassName: "roboshop-efs"  # Connects to EFS StorageClass
+      accessModes: [ "ReadWriteMany" ]  # Required for EFS multi-pod access
       resources:
         requests:
-          storage: 5Gi
+          storage: 5Gi  # Size of EFS volume requested

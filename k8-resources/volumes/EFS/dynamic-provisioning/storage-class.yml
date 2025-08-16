@@ -4,10 +4,10 @@ reclaimPolicy: Retain
 metadata:
   name: roboshop-efs
 provisioner: efs.csi.aws.com
-parameters:
-  fileSystemId: fs-08969394d1bbe8f0d
-  provisioningMode: efs-ap
-  directoryPerms: "700"
-  gidRangeStart: "1000"
-  gidRangeEnd: "2000"
-  basePath: "/dynamic"
+# parameters:
+#   fileSystemId: fs-08969394d1bbe8f0d
+#   provisioningMode: efs-ap
+#   directoryPerms: "700"
+#   gidRangeStart: "1000"
+#   gidRangeEnd: "2000"
+#   basePath: "/dynamic"

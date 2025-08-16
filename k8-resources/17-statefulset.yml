@@ -50,18 +50,16 @@ spec:
       - name: nginx
         image: nginx
         volumeMounts:
-        - name: ebs-roboshop-pvc
+        - name: efs-dynamic-pvc
           mountPath: /usr/share/nginx/html
-          nodeSelector:
-            topology.kubernetes.io/zone: us-east-1c
-  # This is nothing but PVC, you can directly create here
+      # nodeSelector:
+      #   topology.kubernetes.io/zone: us-east-1c
   volumeClaimTemplates:
   - metadata:
-      name: ebs-roboshop-pvc
+      name: efs-dynamic-pvc
     spec:
-      accessModes: [ "ReadWriteOnce" ]
-    # storageClassName: "roboshop-ebs"  # <-- Change this to your EFS storage class name
-      storageClassName: "roboshop-ebs"   # <-- Change this to your EBS storage class name
+      storageClassName: "roboshop-efs"
+      accessModes: [ "ReadWriteMany" ]
       resources:
         requests:
-          storage: 2Gi
+          storage: 5Gi

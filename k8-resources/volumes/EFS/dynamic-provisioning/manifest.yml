@@ -15,7 +15,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: efs-pvc
+  name: efs-dynamic-pvc
 spec:
   accessModes:
     - ReadWriteMany  # Multiple nodes can read/write at the same time
@@ -43,4 +43,4 @@ spec:
   volumes:
   - name: efs-storage
     persistentVolumeClaim:
-      claimName: efs-pvc  # Use the PVC to get the EFS volume
+  claimName: efs-dynamic-pvc  # Use the PVC to get the EFS volume

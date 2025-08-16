@@ -36,6 +36,7 @@ spec:
       claimName: ebs-dynamic-pvc  # Use the PVC to get the EBS volume
 
 # This Service exposes the Nginx pod to the outside world using a LoadBalancer
+
 ---
 apiVersion: v1
 kind: Service

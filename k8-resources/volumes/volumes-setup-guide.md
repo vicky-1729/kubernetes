@@ -60,35 +60,20 @@ kubectl apply -f efs-driver.yaml
 Client
   │
   ▼
-Normal Service (nginx-svc-normal)
+Normal Service: nginx-svc-normal
   │
   ▼
-StatefulSet Pods
+StatefulSet: nginx-statefulset (3 Pods)
  ├─ Pod 0: nginx-statefulset-0
  │     │
  │     ▼
- │   PVC: www-nginx-statefulset-0
- │     │
- │     ▼
- │   EFS Mount Target us-east-1a (SG: sg-0e73876bce9ca1ac8)
- │     ▲
- │     │ NFS Port 2049 allowed from Worker Node SG (sg-02d1b8ab0e2be71c5)
+ │   PVC → EFS Mount Target (same AZ)
  ├─ Pod 1: nginx-statefulset-1
  │     │
  │     ▼
- │   PVC: www-nginx-statefulset-1
- │     │
- │     ▼
- │   EFS Mount Target us-east-1a (SG: sg-0e73876bce9ca1ac8)
- │     ▲
- │     │ NFS Port 2049 allowed from Worker Node SG (sg-02d1b8ab0e2be71c5)
+ │   PVC → EFS Mount Target (same AZ)
  └─ Pod 2: nginx-statefulset-2
        │
        ▼
-     PVC: www-nginx-statefulset-2
-       │
-       ▼
-     EFS Mount Target us-east-1c (SG: sg-0e73876bce9ca1ac8)
-       ▲
-       │ NFS Port 2049 allowed from Worker Node SG (sg-02d1b8ab0e2be71c5)
+     PVC → EFS Mount Target (same AZ)
 ```

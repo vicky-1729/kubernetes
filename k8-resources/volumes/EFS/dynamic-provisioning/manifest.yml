@@ -19,7 +19,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany  # Multiple nodes can read/write at the same time
-  storageClassName: efs-sc  # Use the dynamic EFS StorageClass
+  storageClassName: roboshop-efs  # Use the dynamic EFS StorageClass
   resources:
     requests:
       storage: 5Gi  # Request 5Gi of storage

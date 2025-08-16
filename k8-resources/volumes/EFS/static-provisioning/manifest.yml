@@ -7,7 +7,7 @@ spec:
     storage: 10Gi
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
+    -  ReadWriteMany
   storageClassName: ""
   persistentVolumeReclaimPolicy: Retain
   csi:
@@ -22,7 +22,7 @@ metadata:
   name: efs-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
+    -  ReadWriteMany
   storageClassName: ""  # Match the PV for static provisioning
   resources:
     requests:

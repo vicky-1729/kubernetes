@@ -1,33 +1,36 @@
+# This PersistentVolume statically provisions an EFS volume using the AWS EFS CSI driver
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: efs-pv
 spec:
   capacity:
-    storage: 10Gi
-  volumeMode: Filesystem
+    storage: 10Gi  # Total storage available on the EFS volume
+  volumeMode: Filesystem  # Use filesystem mode for mounting
   accessModes:
-    - ReadWriteMany
-  storageClassName: ""             # Static provisioning
-  persistentVolumeReclaimPolicy: Retain
+    - ReadWriteMany  # Multiple nodes can read/write at the same time
+  storageClassName: ""  # Empty for static provisioning
+  persistentVolumeReclaimPolicy: Retain  # PV will not be deleted automatically
   csi:
-    driver: efs.csi.aws.com
-    volumeHandle: fs-038d717155e5b652b   # Replace with your actual EFS FileSystem ID
+    driver: efs.csi.aws.com  # Use the EFS CSI driver
+    volumeHandle: fs-038d717155e5b652b   # EFS FileSystem ID
 
 ---
+# This PersistentVolumeClaim requests storage from the above EFS PV
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: efs-pvc
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: ""             # Must match PV
+    - ReadWriteMany  # Must match PV access mode
+  storageClassName: ""  # Must match PV for static provisioning
   resources:
     requests:
-      storage: 5Gi
+      storage: 5Gi  # Request 5Gi from the PV
 
 ---
+# This Pod runs Nginx and mounts the EFS volume at /usr/share/nginx/html
 apiVersion: v1
 kind: Pod
 metadata:
@@ -41,13 +44,14 @@ spec:
     image: nginx
     volumeMounts:
     - name: efs-storage
-      mountPath: /usr/share/nginx/html
+      mountPath: /usr/share/nginx/html  # Mount the EFS volume here
   volumes:
   - name: efs-storage
     persistentVolumeClaim:
-      claimName: efs-pvc
+      claimName: efs-pvc  # Use the PVC to get the EFS volume
 
 ---
+# This Service exposes the Nginx pod using a LoadBalancer
 apiVersion: v1
 kind: Service
 metadata:
@@ -56,11 +60,11 @@ metadata:
     env: test
     project: roboshop
 spec:
-  type: LoadBalancer
+  type: LoadBalancer  # Exposes the service externally using a cloud provider's load balancer
   selector:
-    env: test
-    project: roboshop
+    env: test  # Selects pods with this label
+    project: roboshop  # Selects pods with this label
   ports:
   - protocol: TCP
-    port: 80
-    targetPort: 80
+    port: 80  # Port exposed by the service
+    targetPort: 80  # Port on the pod/container

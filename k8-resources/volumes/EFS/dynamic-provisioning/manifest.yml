@@ -1,27 +1,30 @@
+# This Service exposes the Nginx pod using a ClusterIP (internal) or LoadBalancer (external)
 apiVersion: v1
 kind: Service
 metadata:
   name: efs-service
 spec:
   selector:
-    app: efs-app
+    app: efs-app  # Selects pods with this label
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 80
+      port: 80  # Port exposed by the service
+      targetPort: 80  # Port on the pod/container
 ---
+# This PersistentVolumeClaim requests dynamic EFS storage using the efs-sc StorageClass
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: efs-pvc
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: efs-sc  # For dynamic provisioning
+    - ReadWriteMany  # Multiple nodes can read/write at the same time
+  storageClassName: efs-sc  # Use the dynamic EFS StorageClass
   resources:
     requests:
-      storage: 5Gi
+      storage: 5Gi  # Request 5Gi of storage
 ---
+# This Pod runs Nginx and mounts the dynamically provisioned EFS volume
 apiVersion: v1
 kind: Pod
 metadata:
@@ -29,14 +32,15 @@ metadata:
   labels:
     env: test
     project: roboshop
+    app: efs-app  # Needed for service selector
 spec:
   containers:
   - name: nginx
     image: nginx
     volumeMounts:
     - name: efs-storage
-      mountPath: /usr/share/nginx/html
+      mountPath: /usr/share/nginx/html  # Mount the EFS volume here
   volumes:
   - name: efs-storage
     persistentVolumeClaim:
-      claimName: efs-pvc
+      claimName: efs-pvc  # Use the PVC to get the EFS volume

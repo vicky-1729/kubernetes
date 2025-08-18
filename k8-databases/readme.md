@@ -80,3 +80,48 @@ kubectl logs <mysql-pod-name>
 > - DB connectivity checks (Mongo + MySQL)
 > - Logs
 
+
+# Kubernetes Stateful Application (MongoDB + MySQL) - Commands Cheat Sheet
+
+```sh
+# -----------------------------------
+# 1. Deploy Stateful Applications
+# -----------------------------------
+kubectl apply -f mongodb.yaml
+kubectl apply -f mysql.yaml
+
+# -----------------------------------
+# 2. Check Pods, Services, PVC, PV
+# -----------------------------------
+kubectl get pods -n roboshop
+kubectl get svc -n roboshop
+kubectl get pvc -n roboshop
+kubectl get pv
+
+# Describe in detail if needed
+kubectl describe pvc mongodb-data-mongodb-0 -n roboshop
+kubectl describe svc mongodb -n roboshop
+kubectl describe svc mysql -n roboshop
+
+# -----------------------------------
+# 3. DNS Resolution (inside BusyBox Pod)
+# -----------------------------------
+kubectl run -it busybox --image=busybox:1.28 --restart=Never -- sh
+
+# Inside BusyBox
+nslookup mongodb
+nslookup mysql
+
+# -----------------------------------
+# 4. Connect to MongoDB from BusyBox
+# -----------------------------------
+mongo --host mongodb
+
+# -----------------------------------
+# 5. Cleanup (if needed)
+# -----------------------------------
+kubectl delete -f mongodb.yaml
+kubectl delete -f mysql.yaml
+kubectl delete pvc --all -n roboshop
+kubectl delete pv --all
+kubectl delete pod busybox

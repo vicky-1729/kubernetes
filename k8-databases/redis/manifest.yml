@@ -1,0 +1,83 @@
+# Headless Service for Redis StatefulSet
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-headless
+  namespace: roboshop
+  labels:
+    component: redis
+    project: roboshop
+    tier: database
+spec:
+  clusterIP: None # Headless service for direct pod DNS
+  selector:
+    component: redis
+    project: roboshop
+    tier: database
+  ports:
+    - protocol: TCP
+      port: 6379 # Redis default port
+      targetPort: 6379
+---
+# ClusterIP Service for Redis
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: roboshop
+  labels:
+    component: redis
+    project: roboshop
+    tier: database
+spec:
+  type: ClusterIP # Internal service for Redis
+  selector:
+    component: redis
+    project: roboshop
+    tier: database
+  ports:
+    - protocol: TCP
+      port: 6379 # Redis default port
+      targetPort: 6379
+---
+# Redis StatefulSet with per-pod PVC
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+  namespace: roboshop
+  labels:
+    component: redis
+    project: roboshop
+    tier: database
+spec:
+  serviceName: redis-headless # Headless service required for StatefulSet
+  replicas: 2 # Number of Redis pods
+  selector:
+    matchLabels:
+      component: redis
+      project: roboshop
+      tier: database
+  template:
+    metadata:
+      labels:
+        component: redis
+        project: roboshop
+        tier: database
+    spec:
+      containers:
+        - name: redis
+          image: redis:7.0 # Official Redis image
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data # Redis data directory
+  # This is nothing but PVC, you can directly create here
+  volumeClaimTemplates:
+  - metadata:
+      name: redis-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ] # Only one node can use this volume at a time
+      storageClassName: "roboshop-ebs" # Use EBS for dynamic storage
+      resources:
+        requests:
+          storage: 2Gi # Each pod gets 2Gi storage

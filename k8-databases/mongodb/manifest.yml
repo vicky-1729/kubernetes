@@ -1,0 +1,82 @@
+
+# Headless Service for MongoDB StatefulSet
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-headless
+  labels:
+    component: mongodb
+    project: roboshop
+    environment: dev
+spec:
+  clusterIP: None
+  selector:
+    component: mongodb
+    project: roboshop
+    environment: dev
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+# ClusterIP Service for MongoDB
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  labels:
+    component: mongodb
+    project: roboshop
+    environment: dev
+spec:
+  type: ClusterIP
+  selector:
+    component: mongodb
+    project: roboshop
+    environment: dev
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+# MongoDB StatefulSet with per-pod PVC
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+  labels:
+    component: mongodb
+    project: roboshop
+    environment: dev
+spec:
+  serviceName: mongodb-headless
+  replicas: 2
+  selector:
+    matchLabels:
+      component: mongodb
+      project: roboshop
+      environment: dev
+  template:
+    metadata:
+      labels:
+        component: mongodb
+        project: roboshop
+        environment: dev
+    spec:
+      containers:
+      - name: mongodb
+        image: joindevops/mongodb:v1
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongodb-data
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: roboshop-ebs
+      resources:
+        requests:
+          storage: 2Gi

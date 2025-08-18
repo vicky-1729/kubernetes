@@ -1,5 +1,7 @@
 
+
 # Headless Service for MongoDB StatefulSet
+# This service gives each MongoDB pod a stable DNS name for direct communication
 apiVersion: v1
 kind: Service
 metadata:
@@ -7,19 +9,21 @@ metadata:
   labels:
     component: mongodb
     project: roboshop
-    environment: dev
+    tier: database
 spec:
-  clusterIP: None
+  clusterIP: None # Headless service (no cluster IP)
   selector:
     component: mongodb
     project: roboshop
-    environment: dev
+    tier: database
   ports:
   - protocol: TCP
-    port: 27017
+    port: 27017 # MongoDB default port
     targetPort: 27017
 
+
 # ClusterIP Service for MongoDB
+# Used for internal communication between services and MongoDB
 apiVersion: v1
 kind: Service
 metadata:
@@ -27,54 +31,56 @@ metadata:
   labels:
     component: mongodb
     project: roboshop
-    environment: dev
+    tier: database
 spec:
-  type: ClusterIP
+  type: ClusterIP # Default internal service type
   selector:
     component: mongodb
     project: roboshop
-    environment: dev
+    tier: database
   ports:
   - protocol: TCP
-    port: 27017
+    port: 27017 # MongoDB default port
     targetPort: 27017
 
+
 # MongoDB StatefulSet with per-pod PVC
+# Each pod gets its own persistent volume for data storage
 apiVersion: apps/v1
-kind: StatefulSet
+kind: StatefulSet # Use StatefulSet for stateful apps like databases
 metadata:
   name: mongodb
   labels:
     component: mongodb
     project: roboshop
-    environment: dev
+    tier: database
 spec:
-  serviceName: mongodb-headless
-  replicas: 2
+  serviceName: mongodb-headless # Headless service required for StatefulSet
+  replicas: 2 # Number of MongoDB pods
   selector:
     matchLabels:
       component: mongodb
       project: roboshop
-      environment: dev
+      tier: database
   template:
     metadata:
       labels:
         component: mongodb
         project: roboshop
-        environment: dev
+        tier: database
     spec:
       containers:
       - name: mongodb
-        image: joindevops/mongodb:v1
+        image: joindevops/mongodb:v1 # Custom MongoDB image
         volumeMounts:
         - name: mongodb-data
-          mountPath: /data/db
+          mountPath: /data/db # MongoDB data directory
   volumeClaimTemplates:
   - metadata:
       name: mongodb-data
     spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: roboshop-ebs
+      accessModes: [ "ReadWriteOnce" ] # Only one node can use this volume at a time
+      storageClassName: roboshop-ebs # Use EBS for dynamic storage
       resources:
         requests:
-          storage: 2Gi
+          storage: 2Gi # Each pod gets 2Gi storage

@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: StatefulSet # Use StatefulSet for stateful apps like databases
 metadata:
   name: mysql
   labels:
@@ -7,8 +7,8 @@ metadata:
     project: roboshop
     environment: dev
 spec:
-  serviceName: mysql-headless
-  replicas: 2
+  serviceName: mysql-headless # Headless service required for StatefulSet
+  replicas: 2 # Number of MySQL pods
   selector:
     matchLabels:
       component: mysql
@@ -24,28 +24,28 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: joindevops/mysql:v1
+        image: joindevops/mysql:v1 # Custom MySQL image
         volumeMounts:
         - name: mysql-data
-          mountPath: /var/lib/mysql
+          mountPath: /var/lib/mysql # MySQL data directory
         envFrom:
         - secretRef:
-            name: mysql
+            name: mysql # Inject MySQL root password from Secret
   volumeClaimTemplates:
   - metadata:
       name: mysql-data
     spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: roboshop-ebs
+      accessModes: [ "ReadWriteOnce" ] # Only one node can use this volume at a time
+      storageClassName: roboshop-ebs # Use EBS for dynamic storage
       resources:
         requests:
-          storage: 2Gi
+          storage: 2Gi # Each pod gets 2Gi storage
 spec:
   type: ClusterIP
   selector:
       component: mysql
       project: roboshop
-      environment: dev        
+      tier: database        
   ports:
   - protocol: TCP
     port: 3306 # service port
@@ -58,7 +58,7 @@ metadata:
   labels:
     component: mysql
     project: roboshop
-    environment: dev        
+    tier: database        
 spec:
   serviceName: mysql-headless
   replicas: 2
@@ -66,14 +66,14 @@ spec:
     matchLabels:
       component: mysql
       project: roboshop
-      environment: dev  
+      tier: database  
   template:
     metadata:
       name: mysql
       labels:
         component: mysql
         project: roboshop
-        environment: dev
+        tier: database
       conatiners:
       - name: mysql
         image: joindevops/mysql:v1

@@ -1,4 +1,100 @@
+# RabbitMQ Secret for credentials
 apiVersion: v1
 kind: Secret
 metadata:
-  
+  name: rabbitmq
+  namespace: roboshop
+  labels:
+    component: rabbitmq
+    project: roboshop
+    tier: database
+type: Opaque
+data:
+  RABBITMQ_DEFAULT_USER: "cm9ib3Nob3A="
+  RABBITMQ_DEFAULT_PASS: "cm9ib3Nob3AxMjM="
+---
+# Headless Service for RabbitMQ StatefulSet
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-headless
+  namespace: roboshop
+  labels:
+    component: rabbitmq
+    project: roboshop
+    tier: database
+spec:
+  clusterIP: None
+  selector:
+    component: rabbitmq
+    project: roboshop
+    tier: database
+  ports:
+  - protocol: TCP
+    port: 5672 # RabbitMQ default port
+    targetPort: 5672
+---
+# ClusterIP Service for RabbitMQ
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  namespace: roboshop
+  labels:
+    component: rabbitmq
+    project: roboshop
+    tier: database
+spec:
+  type: ClusterIP
+  selector:
+    component: rabbitmq
+    project: roboshop
+    tier: database
+  ports:
+  - protocol: TCP
+    port: 5672 # RabbitMQ default port
+    targetPort: 5672
+---
+# RabbitMQ StatefulSet with per-pod PVC
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rabbitmq
+  namespace: roboshop
+  labels:
+    component: rabbitmq
+    project: roboshop
+    tier: database
+spec:
+  serviceName: rabbitmq-headless
+  replicas: 2
+  selector:
+    matchLabels:
+      component: rabbitmq
+      project: roboshop
+      tier: database
+  template:
+    metadata:
+      labels:
+        component: rabbitmq
+        project: roboshop
+        tier: database
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:3
+        envFrom:
+        - secretRef:
+            name: rabbitmq
+        volumeMounts:
+        - name: rabbitmq-data
+          mountPath: /var/lib/rabbitmq
+  volumeClaimTemplates:
+  - metadata:
+      name: rabbitmq-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: roboshop-ebs
+      resources:
+        requests:
+          storage: 2Gi

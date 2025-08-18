@@ -19,8 +19,7 @@ spec:
   - protocol: TCP
     port: 27017 # MongoDB default port
     targetPort: 27017
-
-
+---
 # ClusterIP Service for MongoDB
 # Used for internal communication between services and MongoDB
 apiVersion: v1
@@ -42,8 +41,7 @@ spec:
   - protocol: TCP
     port: 27017 # MongoDB default port
     targetPort: 27017
-
-
+---
 # MongoDB StatefulSet with per-pod PVC
 # Each pod gets its own persistent volume for data storage
 apiVersion: apps/v1

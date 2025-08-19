@@ -41,6 +41,13 @@ spec:
       containers:
       - name: cart
         image: joindevops/cart:v1  # The Docker image for the cart service
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "100m"
+            memory: "256Mi"
         envFrom:
           - configMapRef:
               name: cart  # Load environment variables from the ConfigMap above

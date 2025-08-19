@@ -61,6 +61,13 @@ spec:
       containers:
         - name: payment
           image: joindevops/payment:v1  # Docker image for the app
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              cpu: "100m"
+              memory: "256Mi"
           envFrom:
           - configMapRef:
               name: payment  # Load environment variables from ConfigMap

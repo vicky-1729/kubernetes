@@ -42,6 +42,13 @@ spec:
       containers:
       - name: catalogue
         image: joindevops/catalogue:v1  # Docker image for the app
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "100m"
+            memory: "256Mi"
         envFrom:
         - configMapRef: 
             name: catalogue  # Load environment variables from ConfigMap

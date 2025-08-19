@@ -41,6 +41,13 @@ spec:
       containers:
       - name: shipping
         image: joindevops/shipping:v1  # Docker image for the app
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "100m"
+            memory: "256Mi"
         envFrom:
         - configMapRef:
             name: shipping  # Load environment variables from ConfigMap

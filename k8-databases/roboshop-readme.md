@@ -90,3 +90,35 @@ This folder contains all the Kubernetes YAML files needed to deploy databases fo
 
 ---
 This guide helps you quickly deploy and manage all Roboshop databases on Kubernetes. Use this as a reference for setup and troubleshooting.
+```
+EBS
+ ├─ Static Provisioning
+ │    1. Install EBS CSI driver
+ │    2. Give EC2 access via role + EBSCSIDriverPolicy
+ │    3. Create EBS volume in same AZ as EC2
+ │    4. Create PV
+ │    5. Create PVC
+ │    6. Create Pod (use nodeSelector)
+ │
+ └─ Dynamic Provisioning
+      1. Create StorageClass for EBS
+      2. Create PVC pointing to StorageClass
+      3. Pod claims storage automatically
+      4. Pod uses PV created dynamically
+
+EFS
+ ├─ Static Provisioning
+ │    1. Install EFS CSI driver
+ │    2. Give nodes permission via EFSCSIDriverPolicy
+ │    3. Create EFS volume
+ │    4. Allow port 2049 in EFS SG from EC2 SG and EFS SG also
+ │    5. Create PV
+ │    6. Create PVC
+ │    7. Mount to Pod
+ │
+ └─ Dynamic Provisioning
+      1. Create StorageClass for EFS
+      2. Create PVC pointing to StorageClass
+      3. Pod claims storage automatically
+      4. Pod mounts storage
+```

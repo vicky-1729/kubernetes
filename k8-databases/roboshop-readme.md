@@ -88,8 +88,26 @@ This folder contains all the Kubernetes YAML files needed to deploy databases fo
 - You can check logs and connectivity using standard kubectl commands.
 - Delete resources with `kubectl delete -f manifest.yml` if needed.
 
+## Horizontal Pod Autoscaling (HPA)
+
+- HPA automatically increases or decreases the number of pods based on CPU or memory usage.
+- You can use HPA for stateless microservices like catalogue, cart, user, etc.
+- Example command to see HPA status:
+  ```bash
+  kubectl get hpa -n roboshop
+  ```
+  > Shows all HPAs and their current pod counts, CPU/memory usage, and scaling limits.
+- To describe an HPA for more details:
+  ```bash
+  kubectl describe hpa <hpa-name> -n roboshop
+  ```
+  > Shows metrics, events, and scaling history for the autoscaler.
+- HPA is defined in YAML using the `HorizontalPodAutoscaler` kind.
+- You can set min/max replicas and target CPU/memory utilization.
+
 ---
 This guide helps you quickly deploy and manage all Roboshop databases on Kubernetes. Use this as a reference for setup and troubleshooting.
+
 ```
 EBS
  ├─ Static Provisioning

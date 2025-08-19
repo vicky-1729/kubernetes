@@ -1,0 +1,72 @@
+# ConfigMap: Stores environment variables for the catalogue microservice
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: catalogue
+  namespace: roboshop  # Namespace for logical grouping
+  labels:
+    project: roboshop
+    component: catalogue
+    tier: app
+# Data section contains key-value pairs used by the app
+data:
+  MONGO: "true"  # Enable MongoDB
+  MONGO_URL: "mongodb://mongodb:27017/catalogue"  # Connection string for MongoDB
+
+---
+# Deployment: Creates and manages pods for the catalogue microservice
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogue
+  namespace: roboshop
+  labels:
+    project: roboshop
+    component: catalogue
+    tier: app
+spec:
+  replicas: 1  # Number of pod copies
+  selector:
+    matchLabels:
+      project: roboshop
+      component: catalogue
+      tier: app 
+  template:
+    metadata:
+      name: catalogue
+      labels:
+        project: roboshop
+        component: catalogue
+        tier: app
+    spec:
+      containers:
+      - name: catalogue
+        image: joindevops/catalogue:v1  # Docker image for the app
+        envFrom:
+        - configMapRef: 
+            name: catalogue  # Load environment variables from ConfigMap
+
+---
+# Service: Exposes the catalogue pods inside the cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalogue
+  namespace: roboshop
+  labels:
+    project: roboshop
+    component: catalogue
+    tier: app
+spec:
+  type: ClusterIP  # Internal cluster service
+  selector:
+    project: roboshop
+    component: catalogue
+    tier: app  
+  ports: 
+    - protocol: TCP
+      port: 8080 # Port exposed by the service
+      targetPort: 8080 # Port on the pod/container
+
+
+

@@ -1,0 +1,66 @@
+# This ConfigMap stores environment variables for the cart service
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cart
+  namespace: roboshop
+  labels:
+    component: cart
+    project: roboshop
+    tier: app 
+data:
+  REDIS_HOST: "redis"  # The Redis service hostname
+  CATALOGUE_HOST: "catalogue"  # The Catalogue service hostname
+  CATALOGUE_PORT: "8080"  # The port for the Catalogue service
+---
+# This Deployment runs the cart microservice
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart
+  namespace: roboshop
+  labels:
+    component: cart
+    project: roboshop
+    tier: app
+spec:
+  replicas: 1  # Run one copy of the cart service
+  selector:
+    matchLabels:
+      component: cart
+      project: roboshop
+      tier: app
+  template:
+    metadata:
+      name: cart
+      labels:
+        component: cart
+        project: roboshop
+        tier: app
+    spec:
+      containers:
+      - name: cart
+        image: joindevops/cart:v1  # The Docker image for the cart service
+        envFrom:
+          - configMapRef:
+              name: cart  # Load environment variables from the ConfigMap above
+---
+# This Service exposes the cart microservice inside the cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart
+  namespace: roboshop
+  labels:
+    component: cart
+    project: roboshop
+    tier: app
+spec:
+  selector:
+    component: cart
+    project: roboshop
+    tier: app  # Match the labels in the Deployment
+  ports:
+  - protocol: TCP
+    port: 8080  # Service port
+    targetPort: 8080  # Port on the cart container

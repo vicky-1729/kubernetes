@@ -4,15 +4,14 @@ metadata:
   name: with-pod-anti-affinity
 spec:
   affinity:
-    podAntiAffinity:
+    nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
       - labelSelector:
           matchExpressions:
-          - key: vs
+          - key: security
             operator: NotIn
             values:
             - vicky
-        topologyKey: "kubernetes.io/hostname"
   containers:
   - name: nginx
     image: nginx

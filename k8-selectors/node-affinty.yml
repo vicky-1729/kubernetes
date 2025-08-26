@@ -20,7 +20,7 @@ spec:
           - key: hhhd
             operator: In
             values:
-            - vickyy
+            - hjaksj
   containers:
   - name: with-node-affinity
     image: nginx

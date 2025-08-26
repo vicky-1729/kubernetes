@@ -21,7 +21,8 @@ metadata:
 spec:
   affinity:
     podAffinity:
-      # Soft rule: try to schedule near pods with env=dev
+         # Soft rule: try to schedule near pods with env=dev
+      # If no suitable pod exists, pod-affinity-2 can still run elsewhere
       preferredDuringSchedulingIgnoredDuringExecution:
       - weight: 100       # How strong the preference is (1-100)
         podAffinityTerm:

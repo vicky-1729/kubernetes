@@ -21,7 +21,8 @@ metadata:
 spec:
   affinity:
     podAffinity:
-      # Hard rule: must run near pods with env=dev
+       # Hard rule: must run near pods with env=dev
+      # If no matching pod exists, pod-affinity-2 stays Pending
       requiredDuringSchedulingIgnoredDuringExecution:
       - labelSelector: 
           matchExpressions:

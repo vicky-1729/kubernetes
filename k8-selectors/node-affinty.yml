@@ -29,6 +29,7 @@ spec:
             operator: In
             values:
             - vs  # Prefer nodes with label v=vs
+        # if no perfences matche sthen it goes to the random nodes but defint it will alloacte
   containers:  
   - name: with-node-affinity  
     image: nginx 

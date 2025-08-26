@@ -6,8 +6,8 @@ spec:
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
+      - nodeSelectorTerms:
+        - matchExpressions:
           - key: security
             operator: NotIn
             values:

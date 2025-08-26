@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-1
+  labels:
+    env: dev   # pod-2 will try to avoid this pod
+    project: roboshop
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-2
+  labels:
+    env: prod
+    project: roboshop
+spec:
+  affinity:
+    podAntiAffinity:
+      # Soft rule: try to avoid pods with env=dev
+      # If no suitable node exists, pod-2 can still run on the same zone
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100       # Priority of this preference (1-100)
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: env
+              operator: In
+              values:
+              - dev   # Pods to avoid
+          topologyKey: topology.kubernetes.io/zone   # Prefer a different zone if possible
+  containers:
+  - name: nginx
+    image: nginx
+
+# Pod Anti-Affinity = pod prefers to stay away from certain pods
+# topologyKey = how "far" is measured (same node, zone, or region)
+# Soft rule = pod can still run on same zone if no other node available

@@ -17,7 +17,7 @@ spec:
       - weight: 1
         preference:
           matchExpressions:
-          - key: vs
+          - key: hhhd
             operator: In
             values:
             - vickyy

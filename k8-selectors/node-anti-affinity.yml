@@ -9,9 +9,12 @@ spec:
         nodeSelectorTerms:
         - matchExpressions:
           - key: vs
-            operator: NotIn
+            operator: NotIn # acting as node-anti-affinty
             values:
             - vicky
   containers:
   - name: nginx
     image: nginx
+#Here we are using nodeAffinity, but by using the operator NotIn, it works like node anti-affinity.
+
+#This way, you can control which nodes a pod should NOT go to.

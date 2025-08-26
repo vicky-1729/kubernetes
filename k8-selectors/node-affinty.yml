@@ -5,21 +5,30 @@ metadata:
 spec:
   affinity:
     nodeAffinity:
+      # Hard requirement - pod won't be scheduled unless this condition is met
       requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
+        nodeSelectorTerms:  # List of terms, any of which can match for the pod to be scheduled
+        - matchExpressions:  
+          - key: vs  
+            operator: In 
+            values:  
+            - vicky 
+      # Soft preferences - pod will still be scheduled even if these aren't met
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1  # Weight determines priority when multiple preferences exist (higher = more important)
+        preference:
+          matchExpressions:
           - key: vs
             operator: In
             values:
-            - vi
-      # preferredDuringSchedulingIgnoredDuringExecution:
-      # - weight: 1
-      #   preference:
-      #     matchExpressions:
-      #     - key: vs
-      #       operator: In
-      #       values:
-      #       - vicky
-  containers:
-  - name: with-node-affinity
-    image: nginx
+            - vicky  # Prefer nodes with label vs=vicky
+      - weight: 2  # This preference has higher priority than the one with weight 1
+        preference:
+          matchExpressions:
+          - key: v
+            operator: In
+            values:
+            - vs  # Prefer nodes with label v=vs
+  containers:  
+  - name: with-node-affinity  
+    image: nginx 

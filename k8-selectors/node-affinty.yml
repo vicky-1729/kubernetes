@@ -20,7 +20,7 @@ spec:
           - key: vs
             operator: In
             values:
-            - vicky
+            - vickyy
   containers:
   - name: with-node-affinity
     image: nginx

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tolaration-pod
+  labels:
+    env: dev
+    project: demo
+spec: 
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: Always
+  nodeSelector:
+     kubernetes.io/hostname: ip-192-168-44-84.ec2.internal  # Pod will only be scheduled on the node with this hostname
+  tolerations:
+  - key: "key1"
+    operator: "Equal"
+    value: "value1"

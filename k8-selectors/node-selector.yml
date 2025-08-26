@@ -1,8 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: node-selector
+  name: node-selector-pod
   labels:
+    purpose: nodeSelector-demo
     env: dev
     project: demo
 spec:
@@ -12,3 +13,5 @@ spec:
       imagePullPolicy: Always  # Always pulls the image even if it exists locally
   nodeSelector:
     kubernetes.io/hostname: ip-192-168-44-84.ec2.internal  # Pod will only be scheduled on the node with this hostname
+
+#while practing delete this pod add taint also for this pod

@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-affinity-1
+  labels:
+    env: dev  # Target label that pod-affinity-2 will seek out
+    project: roboshop
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+
+# This is the first pod that should be created (no affinity rules)
+# pod-affinity-2 will be scheduled on the same zone as this pod
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-affinity-2
+  labels:
+    env: prod
+    project: roboshop
+spec:
+  affinity:
+    podAffinity:
+      # Hard requirement - pod will only be scheduled in the same zone as pod-affinity-1
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:  # Selects which pods to be attracted to
+          matchExpressions:
+          - key: env
+            operator: In
+            values:
+            - dev  # Targets pods with env=dev label (pod-affinity-1)
+        topologyKey: topology.kubernetes.io/zone  # Defines the scope of co-location (same zone)
+  containers:
+  - name: nginx
+    image: nginx
+
+# IMPORTANT: Pod Affinity means "I want to run near pods matching these labels"
+# The topologyKey defines how "near" is measured (same node, zone, region, etc.)
+# This example ensures pod-affinity-2 runs in the same zone as any pod with env=dev

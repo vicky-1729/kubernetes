@@ -33,3 +33,17 @@ spec:
   containers:  
   - name: with-node-affinity  
     image: nginx 
+
+# you can use both soft and hard rules together in nodeAffinity.
+
+# Hard rule (requiredDuringSchedulingIgnoredDuringExecution) → pod must run on nodes that match the condition, otherwise it stays Pending.
+
+# Soft rule (preferredDuringSchedulingIgnoredDuringExecution) → pod prefers certain nodes, but if none match, it can still run elsewhere.
+
+# Example:
+
+# Hard rule → pod must run on nodes with hardware=gpu.
+
+# Soft rule → pod prefers nodes with zone=us-east-1a, but if not available, it can go to another zone.
+
+# Kubernetes will first satisfy the hard rule, then try to satisfy the soft preferences.

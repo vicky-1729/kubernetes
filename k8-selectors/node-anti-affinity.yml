@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: with-pod-anti-affinity
+  name: with-node-anti-affinity
 spec:
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
-      - nodeSelectorTerms:
+        nodeSelectorTerms:
         - matchExpressions:
-          - key: security
+          - key: vs
             operator: NotIn
             values:
             - vicky

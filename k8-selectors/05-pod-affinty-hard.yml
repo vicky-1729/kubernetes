@@ -25,7 +25,7 @@ spec:
       requiredDuringSchedulingIgnoredDuringExecution:
       - labelSelector: 
           matchExpressions:
-          - key: envv
+          - key: env
             operator: In
             values:
             - dev   # Target pods with this label

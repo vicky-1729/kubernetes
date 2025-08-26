@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: tolaration-pod
+  name: toleration-pod  
   labels:
     env: dev
     project: demo
@@ -12,7 +12,8 @@ spec:
     imagePullPolicy: Always
   nodeSelector:
      kubernetes.io/hostname: ip-192-168-44-84.ec2.internal  # Pod will only be scheduled on the node with this hostname
-  tolerations:
+  tolerations:  # Allows pod to be scheduled on nodes with matching taints
   - key: "key"
     operator: "Equal"
     value: "value"
+    effect: "NoSchedule"  # Added required effect field (options: NoSchedule, PreferNoSchedule, NoExecute)

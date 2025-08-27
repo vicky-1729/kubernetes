@@ -1,2 +1,2 @@
 deployment:
-  image: nginx:latest
+  image: nginx:alpine3.22-perl

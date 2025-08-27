@@ -1,2 +1,2 @@
 deployment:
-  image: nginx:alpine3.22-perl
+  image: nginx:1.29.1-alpine-perl

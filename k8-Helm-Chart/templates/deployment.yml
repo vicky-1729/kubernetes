@@ -5,4 +5,23 @@ metadata:
   labels:
     env: dev
     project: roboshop
-    
+    tier: application
+  annotations:
+    purpose: "testing nginx with helm"
+spec:
+  replicas: 1 #stateless one is enough
+  selector:
+    matchLabels:
+        env: dev
+        project: roboshop
+  template:
+    metadata:
+      labels:
+        env: dev
+        project: roboshop      
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+
+

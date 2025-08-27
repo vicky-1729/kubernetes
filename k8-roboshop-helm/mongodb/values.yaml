@@ -1,0 +1,4 @@
+deployment:
+  imageUrl: joindevops/mongodb
+  imageVersion: v1
+  replicas: 2

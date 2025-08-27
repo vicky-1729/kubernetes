@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-helm
+  labels:
+    env: dev
+    project: roboshop
+    tier: db
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector: 
+    matchLabels:
+      env: dev
+      project: roboshop
+      tier: db
+  template:
+    metadata:
+      labels:
+        env: dev
+        project: roboshop
+        tier: db
+    spec:
+      containers:
+      - name: mongodb
+        image: {{ .Values.deployment.imageUrl}}:{{ .Values.deployment.imageVersion}}

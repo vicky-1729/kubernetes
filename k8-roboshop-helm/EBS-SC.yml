@@ -5,3 +5,4 @@ metadata:
   name: roboshop-ebs
 provisioner: ebs.csi.aws.com
 volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true

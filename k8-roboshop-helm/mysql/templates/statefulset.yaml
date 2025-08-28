@@ -1,0 +1,40 @@
+# createing mysql statefulset
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: roboshop
+  labels:
+    project: roboshop
+    env: dev
+    tier: db
+spec:
+  replicas: {{ .Values.statefulset.replicas}}
+  selector:
+    matchLabels:
+      project: roboshop
+      env: dev
+      tier: db 
+#this pod defination
+  template:
+    metadata:
+      labels:
+        project: roboshop
+        env: dev
+        tier: db 
+    spec:
+      containers:
+      - name: mysql
+        image: {{ .Values.statefulset.imageUrl }}:{{ .Values.statefulset.imageVersion}}
+        volumeMounts:
+        - name: mongodb-data
+          mountPath: /data/db # MongoDB data directory
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ] # Only one node can use this volume at a time
+      storageClassName: {{ .Values.statefulset.storage.storageClassName }} # Use configurable storage class
+      resources:
+        requests:
+          storage: {{ .Values.statefulset.storage.size }} # Storage size from values.yaml

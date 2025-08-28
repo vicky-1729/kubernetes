@@ -2,7 +2,9 @@ satatefulset:
   imageUrl: joindevops/mongodb
   imageVersion: v1
   replicas: 2
-
+  storage:
+    size: 2Gi
+    storageClassName: roboshop-ebs
 service:
   targetPort: 27017
 

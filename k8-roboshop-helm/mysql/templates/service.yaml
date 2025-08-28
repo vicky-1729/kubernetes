@@ -1,0 +1,19 @@
+# service mysql created
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    project: roboshop
+    env: dev
+    tier: db
+spec:
+  type: ClusterIP
+  selector:
+    project: roboshop
+    env: dev
+    tier: db 
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: {{ .Values.service.targetPort }}

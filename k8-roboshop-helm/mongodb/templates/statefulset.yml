@@ -31,7 +31,7 @@ spec:
         name: mongodb-data
       spec:
         accessModes: [ "ReadWriteOnce" ] # Only one node can use this volume at a time
-        storageClassName: roboshop-ebs # Use EBS for dynamic storage
+        storageClassName: {{ .Values.statefulset.storage.storageClassName }} # Use EBS for dynamic storage
         resources:
           requests:
-            storage: 2Gi # Each pod gets 2Gi storage
+            storage: {{ .Values.statefulset.storage.size}} # Each pod gets 2Gi storage

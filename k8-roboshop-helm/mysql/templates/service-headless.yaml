@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-headless
+  labels:
+    project: roboshop
+    env: dev
+    tier: db
+spec:
+  clusterIP: None
+  selector:
+    project: roboshop
+    env: dev
+    tier: db
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: {{ .Values.serviceHeadless.targetPort }}

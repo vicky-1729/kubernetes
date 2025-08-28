@@ -1,0 +1,13 @@
+serviceHeadless:
+  targetPort: 3306
+
+service:
+  targetPort: 3306
+
+statefulset: 
+  replicas: 2
+  imageUrl: joindevops/mysql
+  imageVersion: v1
+  storage:
+    size: 2Gi
+    storageClassName: roboshop-ebs

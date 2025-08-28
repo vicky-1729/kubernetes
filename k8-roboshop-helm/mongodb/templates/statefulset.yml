@@ -36,3 +36,11 @@ spec:
       resources:
         requests:
           storage: {{ .Values.statefulset.storage.size }} # Each pod gets 2Gi storage
+          # Q: If we don't change volume space through Helm often, what's the use of the values.yml file?
+          # A: Parameterizing values provides flexibility for:
+          #    1. Environment-specific configs (dev=small, prod=large)
+          #    2. Easy CLI overrides (--set statefulset.storage.size=5Gi)
+          #    3. Future-proofing as application storage needs grow
+          #    4. Documentation of configurable options
+          #    5. CI/CD pipeline integration with dynamic values
+          #    6. Testing with minimal resources

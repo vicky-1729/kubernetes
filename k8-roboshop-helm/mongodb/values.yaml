@@ -3,7 +3,7 @@ statefulset:
   imageVersion: v1
   replicas: 2
   storage:
-    size: 3Gi
+    size: 2Gi
     storageClassName: roboshop-ebs
 service:
   targetPort: 27017

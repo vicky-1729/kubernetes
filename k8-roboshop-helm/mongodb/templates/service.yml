@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  labels:
+    env: dev
+    project: roboshop
+    tier: db
+spec:
+  type: ClusterIP
+  selector:
+    env: dev
+    project: roboshop
+    tier: db
+  ports:
+  - protocol: TCP
+    port: 27017 # service port
+    targetPort: {{ .Values.service.targetPort }} # container port
+

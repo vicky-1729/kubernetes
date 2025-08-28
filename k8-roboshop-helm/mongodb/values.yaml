@@ -1,4 +1,10 @@
-deployment:
+satatefulset:
   imageUrl: joindevops/mongodb
   imageVersion: v1
   replicas: 2
+
+service:
+  targetPort: 27017
+
+serviceHeadless:
+  targetPort: 27017

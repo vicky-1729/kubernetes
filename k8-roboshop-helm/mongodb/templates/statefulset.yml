@@ -1,13 +1,13 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: mongodb-helm
+  name: mongodb
   labels:
     env: dev
     project: roboshop
     tier: db
 spec:
-  replicas: {{ .Values.deployment.replicas }}
+  replicas: {{ .Values.satatefulset.replicas }}
   selector: 
     matchLabels:
       env: dev
@@ -22,4 +22,4 @@ spec:
     spec:
       containers:
       - name: mongodb
-        image: {{ .Values.deployment.imageUrl}}:{{ .Values.deployment.imageVersion}}
+        image: {{ .Values.satatefulset.imageUrl}}:{{ .Values.satatefulset.imageVersion}}

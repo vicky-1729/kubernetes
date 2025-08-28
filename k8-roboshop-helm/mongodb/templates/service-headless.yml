@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-headless
+  labels:
+    env: dev
+    project: roboshop
+    tier: db
+spec:
+  clusterIP: None
+  selector:
+    env: dev
+    project: roboshop
+    tier: db
+  ports:
+  - protocol: TCP
+    port: 27017 #servuce port
+    targetPort: {{ .Values.serviceHeadless.targetPort }} #conatiner port

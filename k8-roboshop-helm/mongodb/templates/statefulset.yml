@@ -7,7 +7,7 @@ metadata:
     project: roboshop
     tier: db
 spec:
-  replicas: {{ .Values.satatefulset.replicas }}
+  replicas: {{ .Values.statefulset.replicas }}
   selector: 
     matchLabels:
       env: dev
@@ -22,16 +22,16 @@ spec:
     spec:
       containers:
       - name: mongodb
-        image: {{ .Values.satatefulset.imageUrl}}:{{ .Values.satatefulset.imageVersion}}
+        image: {{ .Values.statefulset.imageUrl }}:{{ .Values.statefulset.imageVersion }}
         volumeMounts:
           - name: mongodb-data
             mountPath: /data/db # MongoDB data directory
-    volumeClaimTemplates:
-    - metadata:
-        name: mongodb-data
-      spec:
-        accessModes: [ "ReadWriteOnce" ] # Only one node can use this volume at a time
-        storageClassName: {{ .Values.statefulset.storage.storageClassName }} # Use EBS for dynamic storage
-        resources:
-          requests:
-            storage: {{ .Values.statefulset.storage.size}} # Each pod gets 2Gi storage
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ] # Only one node can use this volume at a time
+      storageClassName: {{ .Values.statefulset.storage.storageClassName }} # Use EBS for dynamic storage
+      resources:
+        requests:
+          storage: {{ .Values.statefulset.storage.size }} # Each pod gets 2Gi storage

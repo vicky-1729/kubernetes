@@ -27,11 +27,11 @@ spec:
       - name: mysql
         image: {{ .Values.statefulset.imageUrl }}:{{ .Values.statefulset.imageVersion}}
         volumeMounts:
-        - name: mongodb-data
-          mountPath: /data/db # MongoDB data directory
+        - name: mysql-data
+          mountPath: /var/lib/mysql
   volumeClaimTemplates:
   - metadata:
-      name: mongodb-data
+      name: mysql-data
     spec:
       accessModes: [ "ReadWriteOnce" ] # Only one node can use this volume at a time
       storageClassName: {{ .Values.statefulset.storage.storageClassName }} # Use configurable storage class

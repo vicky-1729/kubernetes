@@ -55,6 +55,8 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'   # ALB will listen on HTTPS 443
     alb.ingress.kubernetes.io/target-type: ip                   # Target type is IP (pods get traffic directly)
+    # Use 'alb.ingress.kubernetes.io/scheme: internet-facing' to make ALB accessible from the internet
+    alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/group.name: joindevops            # Grouping multiple ingresses under one ALB
 spec:
   ingressClassName: alb    # Specifies to use AWS ALB Ingress Controller

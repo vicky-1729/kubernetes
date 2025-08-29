@@ -1,0 +1,71 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1
+  labels:
+    project: roboshop
+    env: dev
+    purpose: app1-ingress
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      project: roboshop
+      env: dev
+      purpose: app1-ingress
+  template:
+    metadata:
+      labels:
+        project: roboshop
+        env: dev
+        purpose: app1-ingress 
+    spec:
+      containers:
+      - name: app1
+        image: joindevops/app1:v1
+
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: app1   
+  labels:
+    project: roboshop
+    env: dev
+    purpose: app1-ingress 
+spec:
+  type: ClusterIP
+  selector:
+    project: roboshop
+    env: dev
+    purpose: app1-ingress
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+---
+# Ingress definition
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app1-minimal-ingress   # Name of the Ingress resource
+  annotations:
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'   # ALB will listen on HTTPS 443
+    alb.ingress.kubernetes.io/target-type: ip                   # Target type is IP (pods get traffic directly)
+    alb.ingress.kubernetes.io/group.name: joindevops            # Grouping multiple ingresses under one ALB
+spec:
+  ingressClassName: alb    # Specifies to use AWS ALB Ingress Controller
+  rules:
+  - host: vsvicky.in       # Domain name for routing
+    http:
+      paths:
+      - path: /            # Path-based routing (root path)
+        pathType: Prefix   # Matches all requests starting with "/"
+        backend:
+          service:
+            name: app1     # Service to route traffic to
+            port:
+              number: 80   # Port on the Service

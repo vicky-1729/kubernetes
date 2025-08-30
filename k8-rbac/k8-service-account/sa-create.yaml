@@ -8,6 +8,4 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: eksctl
 
-# This ServiceAccount has been created to retrieve secrets from AWS Secrets Manager.
-# It uses the IAM role specified in the annotation to securely access the AWS service
-# without requiring credentials to be stored in the pod.
+# you can done this as manually also there is no problem

@@ -7,3 +7,7 @@ metadata:
     eks.amazonaws.com/role-arn: arn:aws:iam::484907489214:role/SA-AWSSecretManager-Role
   labels:
     app.kubernetes.io/managed-by: eksctl
+
+# This ServiceAccount has been created to retrieve secrets from AWS Secrets Manager.
+# It uses the IAM role specified in the annotation to securely access the AWS service
+# without requiring credentials to be stored in the pod.

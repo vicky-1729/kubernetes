@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: roboshop
+  # deployment labels
+  labels:
+    component: mysql
+    project: roboshop
+    tier: database
+spec:
+  replicas: 1
+  # These are the labels replica set use to create pod replicas, this should match pod labels
+  selector:
+    matchLabels:
+      component: mysql
+      project: roboshop
+      tier: database
+  # This is pod definition
+  template:
+    metadata:
+      labels:
+        component: mysql
+        project: roboshop
+        tier: database
+    spec:
+      serviceAccount: roboshop-mysql-secret-reader
+      volumes:
+      - name: mysql-secret
+        emptyDir: {}
+      containers:
+      - name: mysql
+        image: joindevops/mysql:v2
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /tmp
+          name: mysql-secret
+      initContainers:
+      - name: fetch-secret
+        image: amazon/aws-cli
+        command:
+        - sh
+        - -c
+        - |
+            aws secretsmanager get-secret-value --secret-id roboshop/mysql/password --query SecretString --output text | jq -r .MYSQL_ROOT_PASSWORD > /tmp/mysql_root_password.txt
+        volumeMounts:
+        - mountPath: /tmp
+          name: mysql-secret

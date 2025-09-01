@@ -1,7 +1,7 @@
 # Terraform EKS RoboShop Project
 
 This repository contains a complete infrastructure-as-code solution for deploying the RoboShop microservices application on AWS EKS (Elastic Kubernetes Service).
-
+![alt text](image.png)
 ## Project Structure and Components
 
 ### 1. Infrastructure as Code (`terraform/`)

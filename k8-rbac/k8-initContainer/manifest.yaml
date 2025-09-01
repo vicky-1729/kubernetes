@@ -46,3 +46,6 @@ spec:
         volumeMounts:
         - mountPath: /tmp
           name: mysql-secret
+
+
+#summary write about init conatiner 

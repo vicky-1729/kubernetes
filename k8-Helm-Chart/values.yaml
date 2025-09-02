@@ -1,6 +1,5 @@
 deployment:
   image: nginx:1.29.1-alpine-perl
 
-
 service:
   targetPort: 80

@@ -24,3 +24,4 @@ spec:
       - name: nginx  # Name of the container
         image: nginx  # Docker image for the container
 
+
